@@ -111,11 +111,21 @@ int main(void){
 		printf("The current time is: %d:%d:%d:\n",hours, mins, secs);
 
 		if (digitalRead(BTNS[0])==0) {
-			printf("Button Preessed.\n");
+			if(hours < 24){
+				wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, hours+1);
+			}
+			else{
+				wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, 0);
+			}
 		}
 
 		if (digitalRead(BTNS[1])==0){
-			printf("Button 2 Pressed.\n");
+			if(mins < 60){
+				wiringPiI2CWriteReg8(RTC, MIN_REGISTER,decCompensation(mins+1));
+			}
+			else{
+				wiringPiI2CWriteReg8(RTC,MIN_REGISTER,0);
+			}
 		}
 		//using a delay to make our program "less CPU hungry"
 		delay(1000); //milliseconds
